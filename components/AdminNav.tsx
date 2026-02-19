@@ -25,9 +25,9 @@ export function AdminNav({ session }: { session: Session | null }) {
 
   if (!session) {
     return (
-      <aside className="w-64 h-full min-h-[calc(100vh-2rem)] bg-cinnabar-700 text-white flex flex-col rounded-2xl shadow-xl">
-        <div className="p-4 border-b border-cinnabar-600 rounded-t-2xl">
-          <Link href="/" className="flex items-center gap-2 text-cinnabar-100 hover:text-white transition-colors">
+      <aside className="w-64 h-full min-h-[calc(100vh-2rem)] bg-jade-500 text-white flex flex-col rounded-2xl shadow-xl">
+        <div className="p-4 border-b border-jade-400 rounded-t-2xl">
+          <Link href="/" className="flex items-center gap-2 text-jade-100 hover:text-white transition-colors">
             <ChevronLeft size={20} />
             <span>Voltar ao Início</span>
           </Link>
@@ -37,11 +37,11 @@ export function AdminNav({ session }: { session: Session | null }) {
   }
 
   return (
-    <aside className="w-64 h-full min-h-[calc(100vh-2rem)] bg-cinnabar-700 text-white flex flex-col rounded-2xl shadow-xl">
-      <div className="p-4 border-b border-cinnabar-600 rounded-t-2xl">
+    <aside className="w-64 h-full min-h-[calc(100vh-2rem)] bg-jade-500 text-white flex flex-col rounded-2xl shadow-xl">
+      <div className="p-4 border-b border-jade-400 rounded-t-2xl">
         <Link href="/admin" className="flex items-center gap-2">
           <span className="text-xl font-bold">Isadora</span>
-          <span className="text-cinnabar-200 text-sm font-medium">Dashboard</span>
+          <span className="text-jade-200 text-sm font-medium">Dashboard</span>
         </Link>
       </div>
 
@@ -54,8 +54,8 @@ export function AdminNav({ session }: { session: Session | null }) {
               href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
                 isActive
-                  ? "bg-cinnabar-600 text-white"
-                  : "text-cinnabar-100 hover:bg-cinnabar-600/50 hover:text-white"
+                  ? "bg-jade-400 text-white"
+                  : "text-jade-100 hover:bg-jade-400/50 hover:text-white"
               }`}
             >
               <Icon size={20} strokeWidth={2} className="shrink-0" />
@@ -65,10 +65,10 @@ export function AdminNav({ session }: { session: Session | null }) {
         })}
       </nav>
 
-      <div className="p-3 border-t border-cinnabar-600 rounded-b-2xl">
+      <div className="p-3 border-t border-jade-400 rounded-b-2xl">
         <button
           onClick={() => signOut({ callbackUrl: "/admin/login" })}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-cinnabar-100 hover:bg-cinnabar-600/50 hover:text-white transition-colors font-medium"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-jade-100 hover:bg-jade-400/50 hover:text-white transition-colors font-medium"
         >
           <LogOut size={20} strokeWidth={2} className="shrink-0" />
           <span>Sair</span>

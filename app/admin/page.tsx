@@ -57,33 +57,12 @@ export default async function AdminDashboardPage() {
             R$ {summary.expense.toFixed(2)}
           </p>
         </div>
-        <div className="bg-cinnabar-50 border border-cinnabar-200 rounded-lg p-4">
-          <p className="text-sm text-cinnabar-700 font-medium">Saldo do mês</p>
-          <p className="text-2xl font-bold text-cinnabar-800">
+        <div className="bg-jade-50 border border-jade-200 rounded-lg p-4">
+          <p className="text-sm text-jade-500 font-medium">Saldo do mês</p>
+          <p className="text-2xl font-bold text-jade-500">
             R$ {summary.balance.toFixed(2)}
           </p>
         </div>
-      </div>
-
-      <div className="flex gap-4 mb-6">
-        <Link
-          href="/admin/financeiros"
-          className="px-4 py-2 bg-cinnabar-600 text-white rounded-lg hover:bg-cinnabar-700"
-        >
-          Ver finanças
-        </Link>
-        <Link
-          href="/admin/clientes"
-          className="px-4 py-2 bg-cinnabar-600 text-white rounded-lg hover:bg-cinnabar-700"
-        >
-          Ver clientes
-        </Link>
-        <Link
-          href="/admin/agenda"
-          className="px-4 py-2 bg-cinnabar-600 text-white rounded-lg hover:bg-cinnabar-700"
-        >
-          Ver agenda
-        </Link>
       </div>
 
       <div className="bg-white rounded-lg shadow p-4">

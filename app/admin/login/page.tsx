@@ -37,9 +37,9 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-cinnabar-50 p-4">
+    <main className="min-h-screen flex items-center justify-center bg-jade-50 p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-center text-cinnabar-800 mb-6">
+        <h1 className="text-2xl font-bold text-center text-jade-500 mb-6">
           Isadora - Área Admin
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cinnabar-500 focus:border-cinnabar-500"
+              className="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jade-500 focus:border-jade-500"
               placeholder="admin@isadora.com"
             />
           </div>
@@ -61,20 +61,20 @@ export default function AdminLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cinnabar-500 focus:border-cinnabar-500"
+              className="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jade-500 focus:border-jade-500"
             />
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 bg-cinnabar-600 text-white rounded-lg hover:bg-cinnabar-700 disabled:opacity-50 transition"
+            className="w-full py-2 bg-jade-500 text-white rounded-lg hover:bg-jade-400 disabled:opacity-50 transition"
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          <Link href="/" className="text-cinnabar-600 hover:underline">
+          <Link href="/" className="text-jade-500 hover:underline">
             Voltar ao início
           </Link>
         </p>
