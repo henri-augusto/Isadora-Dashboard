@@ -37,7 +37,7 @@ export default function ClientesPage() {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <ul className="divide-y">
             {clients.map((c) => (
-              <li key={c.id} onClick={() => setSelected(c)} className={`p-4 cursor-pointer hover:bg-amber-50 ${selected?.id === c.id ? "bg-amber-50" : ""}`}>
+              <li key={c.id} onClick={() => setSelected(c)} className={`p-4 cursor-pointer hover:bg-cinnabar-50 ${selected?.id === c.id ? "bg-cinnabar-50" : ""}`}>
                 <p className="text-black font-medium">{c.name}</p>
                 <p className="text-sm text-gray-600">{c.email}</p>
                 <p className="text-sm text-gray-600">{c.phone}</p>
@@ -61,7 +61,7 @@ export default function ClientesPage() {
                     <span className="text-gray-500">{format(new Date(apt.date), "dd/MM/yyyy", { locale: ptBR })} às {apt.time}</span>
                     <span className="ml-2 text-gray-500">- {apt.braidStyle.name} - {apt.color.name}</span>
                   </div>
-                  <span className={`px-2 py-0.5 rounded text-xs ${apt.status === "completed" ? "bg-green-100 text-green-800" : apt.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-amber-100 text-amber-800"}`}>{apt.status}</span>
+                  <span className={`px-2 py-0.5 rounded text-xs ${apt.status === "completed" ? "bg-green-100 text-green-800" : apt.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-cinnabar-100 text-cinnabar-800"}`}>{apt.status}</span>
                 </li>
               ))}
             </ul>

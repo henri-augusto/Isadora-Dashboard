@@ -42,7 +42,7 @@ export default function AgendaPage() {
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Agenda</h1>
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         {weekDays.map((d) => (
-          <button key={d.toISOString()} onClick={() => setSelectedDate(d)} className={`text-gray-500 flex-shrink-0 px-4 py-2 rounded-lg font-medium ${isSameDay(d, selectedDate) ? "bg-amber-600 text-white" : "bg-white border hover:bg-amber-50"}`}>
+          <button key={d.toISOString()} onClick={() => setSelectedDate(d)} className={`text-gray-500 flex-shrink-0 px-4 py-2 rounded-lg font-medium ${isSameDay(d, selectedDate) ? "bg-cinnabar-600 text-white" : "bg-white border hover:bg-cinnabar-50"}`}>
             {format(d, "EEE dd", { locale: ptBR })}
           </button>
         ))}

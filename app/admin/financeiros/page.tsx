@@ -50,7 +50,7 @@ export default function FinanceirosPage() {
         <select value={year} onChange={(e) => setYear(parseInt(e.target.value))} className="text-black px-3 py-2 border rounded-lg">
           {[year].map((y) => <option key={y} value={y}>{y}</option>)}
         </select>
-        <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700">
+        <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 bg-cinnabar-600 text-white rounded-lg hover:bg-cinnabar-700">
           {showForm ? "Cancelar" : "+ Nova entrada"}
         </button>
       </div>
@@ -64,7 +64,7 @@ export default function FinanceirosPage() {
           <div><label className="text-black block text-sm font-medium mb-1">Valor</label><input type="number" step="0.01" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} required className="text-black w-full px-4 py-2 border rounded-lg" /></div>
           <div><label className="text-black block text-sm font-medium mb-1">Data</label><input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="text-black w-full px-4 py-2 border rounded-lg" /></div>
           <div><label className="text-black block text-sm font-medium mb-1">Descrição</label><input type="text" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required className="text-black w-full px-4 py-2 border rounded-lg" /></div>
-          <button type="submit" className="px-4 py-2 bg-amber-600 text-white rounded-lg">Salvar</button>
+          <button type="submit" className="px-4 py-2 bg-cinnabar-600 text-white rounded-lg">Salvar</button>
         </form>
       )}
 
@@ -73,7 +73,7 @@ export default function FinanceirosPage() {
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4"><p className="text-sm text-green-700">Receita</p><p className="text-2xl font-bold text-green-800">R$ {summary.income.toFixed(2)}</p></div>
             <div className="bg-red-50 border border-red-200 rounded-lg p-4"><p className="text-sm text-red-700">Despesa</p><p className="text-2xl font-bold text-red-800">R$ {summary.expense.toFixed(2)}</p></div>
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4"><p className="text-sm text-amber-700">Saldo</p><p className="text-2xl font-bold text-amber-800">R$ {summary.balance.toFixed(2)}</p></div>
+            <div className="bg-cinnabar-50 border border-cinnabar-200 rounded-lg p-4"><p className="text-sm text-cinnabar-700">Saldo</p><p className="text-2xl font-bold text-cinnabar-800">R$ {summary.balance.toFixed(2)}</p></div>
           </div>
           {summary.byMonth?.length > 0 && (
             <div className="bg-white rounded-lg shadow p-4 mb-6 h-80">
