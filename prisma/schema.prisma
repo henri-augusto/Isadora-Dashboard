@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Client {
+  id          String        @id @default(cuid())
+  name        String
+  phone       String
+  email       String
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  appointments Appointment[]
+}
+
+model BraidStyle {
+  id                String        @id @default(cuid())
+  name              String        @unique
+  description       String?
+  estimatedDuration Int           // minutos
+  basePrice         Float
+  appointments      Appointment[]
+}
+
+model Color {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  hexCode      String
+  appointments Appointment[]
+}
+
+model Appointment {
+  id           String      @id @default(cuid())
+  date         DateTime
+  time         String      // "09:00", "10:00", etc
+  status       String      @default("pending") // pending, confirmed, completed, cancelled
+  notes        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  clientId     String
+  client       Client      @relation(fields: [clientId], references: [id])
+  braidStyleId String
+  braidStyle   BraidStyle  @relation(fields: [braidStyleId], references: [id])
+  colorId      String
+  color        Color       @relation(fields: [colorId], references: [id])
+}
+
+model FinanceEntry {
+  id          String   @id @default(cuid())
+  type        String   // income, expense
+  amount      Float
+  description String
+  date        DateTime
+  category    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
