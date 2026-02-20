@@ -22,10 +22,10 @@ export async function GET(request: NextRequest) {
 
   if (forBooking && date) {
     try {
-      const start = new Date(date);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(date);
-      end.setHours(23, 59, 59, 999);
+      // Corrige o problema de timezone: cria as datas no timezone local
+      const [year, month, day] = date.split("-").map(Number);
+      const start = new Date(year, month - 1, day, 0, 0, 0, 0);
+      const end = new Date(year, month - 1, day, 23, 59, 59, 999);
 
       const booked = await prisma.appointment.findMany({
         where: {
@@ -51,10 +51,10 @@ export async function GET(request: NextRequest) {
   try {
     const where: Record<string, unknown> = {};
     if (date) {
-      const start = new Date(date);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(date);
-      end.setHours(23, 59, 59, 999);
+      // Corrige o problema de timezone: cria as datas no timezone local
+      const [year, month, day] = date.split("-").map(Number);
+      const start = new Date(year, month - 1, day, 0, 0, 0, 0);
+      const end = new Date(year, month - 1, day, 23, 59, 59, 999);
       where.date = { gte: start, lte: end };
     }
 
@@ -80,8 +80,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const data = createSchema.parse(body);
 
-    const appointmentDate = new Date(data.date);
-    appointmentDate.setHours(0, 0, 0, 0);
+    // Corrige o problema de timezone: cria a data no timezone local
+    // data.date vem como "yyyy-MM-dd", então criamos como "yyyy-MM-ddT00:00:00" no timezone local
+    const [year, month, day] = data.date.split("-").map(Number);
+    const appointmentDate = new Date(year, month - 1, day, 0, 0, 0, 0);
 
     let client = await prisma.client.findFirst({
       where: {

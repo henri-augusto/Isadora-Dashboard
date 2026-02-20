@@ -3,9 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { format, addDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { Sun, CloudSun, Moon } from "lucide-react";
 
-const TIME_SLOTS = ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+const PERIODS = [
+  { id: "manha", label: "Manhã", icon: Sun },
+  { id: "tarde", label: "Tarde", icon: CloudSun },
+  { id: "noite", label: "Noite", icon: Moon },
+] as const;
 
 type BraidStyle = { id: string; name: string; description?: string | null; basePrice: number };
 type Color = { id: string; name: string; hexCode: string };
@@ -14,7 +18,6 @@ export default function AgendarPage() {
   const [step, setStep] = useState(1);
   const [styles, setStyles] = useState<BraidStyle[]>([]);
   const [colors, setColors] = useState<Color[]>([]);
-  const [bookedTimes, setBookedTimes] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,16 +37,8 @@ export default function AgendarPage() {
     fetch("/api/colors").then((r) => r.json()).then(setColors);
   }, []);
 
-  useEffect(() => {
-    if (form.date) {
-      fetch(`/api/appointments?forBooking=true&date=${form.date}`).then((r) => r.json()).then((data) => setBookedTimes(data.bookedTimes || []));
-    } else {
-      setBookedTimes([]);
-    }
-  }, [form.date]);
-
-  const availableSlots = TIME_SLOTS.filter((t) => !bookedTimes.includes(t));
-  const minDate = format(new Date(), "yyyy-MM-dd");
+  // Data mínima = amanhã (dia atual não disponível para agendamento)
+  const minDate = format(addDays(new Date(), 1), "yyyy-MM-dd");
   const maxDate = format(addDays(new Date(), 60), "yyyy-MM-dd");
 
   async function handleSubmit(e: React.FormEvent) {
@@ -96,13 +91,16 @@ export default function AgendarPage() {
                 <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} min={minDate} max={maxDate} required className="bg-jade-500 w-full px-4 py-2 border rounded-lg" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Horário</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {availableSlots.map((t) => (
-                    <button key={t} type="button" onClick={() => setForm({ ...form, time: t })} className={`text-black px-3 py-2 rounded-lg border ${form.time === t ? "bg-jade-500 text-white border-jade-500" : "hover:bg-jade-50"}`}>{t}</button>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Período</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {PERIODS.map(({ id, label, icon: Icon }) => (
+                    <button key={id} type="button" onClick={() => setForm({ ...form, time: id })} className={`flex flex-col items-center gap-2 px-3 py-4 rounded-lg border transition-colors ${form.time === id ? "bg-jade-500 text-white border-jade-500" : "text-gray-700 border-gray-300 hover:bg-jade-50 hover:border-jade-200"}`}>
+                      <Icon className="w-8 h-8" strokeWidth={1.5} />
+                      <span className="text-sm font-medium">{label}</span>
+                    </button>
                   ))}
                 </div>
-                {form.date && availableSlots.length === 0 && <p className="text-sm text-gray-500 mt-1">Nenhum horario disponivel nesta data.</p>}
+                <p className="text-sm text-gray-500 mt-3 text-center">Entraremos em contato para verificar o melhor horário dentro do período.</p>
               </div>
               <button type="button" onClick={() => form.date && form.time && setStep(2)} disabled={!form.date || !form.time} className="w-full py-2 bg-jade-500 text-white rounded-lg disabled:opacity-50">Continuar</button>
             </div>

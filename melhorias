@@ -1,16 +1,16 @@
-Em @admin seria melhor um menu de navegação na lateral esquerda da página ao invés da barra de navegação no topo. interessante também criar ícones representando as opções. 
+Melhorias na área do cliente
+
+Na página /agendar no segundo passo "2. estilo e cor" vamos fazer agora um card para seleção do estilo da trança, a imagem no card será dividido masculino/feminino com um corte na diagonal. e podemos manter a parte da cor para seleção. 
+
+Na página /agendar no terceiro passo "3. contato" vamos criar validação de campo validação de telefone ou seja com número de celular com DDD + 9 dígitos. Validação para o campo e-mail, todos durante a escrita e não somente campo clicar no botão "agendar". Nas observações, coloque um placeholder de exemplo "Gostaria de um tom mais escuro de loiro". 
 
 
-Em @agendar.tsx preciso que o dia presente não seja habilitado para agendamentos.
-
-verificar qual o tempo médio de atendimento. Mas geralmente será 2 atendimentos por dia. Caso o primeiro atendimento for na parte da manhã, será possível ter data para os período da tarde, se não o cliente poderá apenas reservar o dia e o horário de início do serviço, então a data ficará indisponível.
-
-No terceiro passo de agendamento (3. contato) criar validação de campo validação de telefone (whats app) ou seja com número de celular com DDD + 9 dígitos. Validação para o campo e-mail, todos durante a escrita e não somente campo clicar no botão "agendar" 
-
+Melhorias na área do administrador
 
 Em @financeiros mostrar no gráfico apenas o balanço do ano atual.
 
 Na parte "lançamentos" colocar a seleção de mês e ano nessa parte.
 
-
 Em @agenda seria mais intuitivo mostrar um calendário completo para selecionar a data. mostrando o dia em cores conforme com cor diferenciada se tiver um cliente agendado. 
+
+Criar uma página para selecionar os dias e periodos que posso trabalhar, uma forma de calendário seria um bom jeito de seleção. Isso irá servir para que o cliente consiga selecionar apenas os dias e os períodos que eu disponibilizar.
