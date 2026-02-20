@@ -4,15 +4,25 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
+// Celular: DDD (2) + 9 + 8 dígitos = 11. Formato: (XX) 9XXXX-XXXX
+const phoneRegex = /^\(\d{2}\)\s9\d{4}-\d{4}$/;
 const createSchema = z.object({
   clientName: z.string().min(2),
-  clientPhone: z.string().min(8),
-  clientEmail: z.string().email(),
+  clientPhone: z.string().regex(phoneRegex, "Telefone inválido. Use DDD + 9 dígitos: (XX) 9XXXX-XXXX"),
+  clientEmail: z.string().email("Email inválido"),
   date: z.string(),
   time: z.string(),
   braidStyleId: z.string(),
   colorId: z.string(),
   notes: z.string().optional(),
+  // Endereço (opcional, preenchido via CEP)
+  enderecoCep: z.string().optional(),
+  enderecoLogradouro: z.string().optional(),
+  enderecoNumero: z.string().optional(),
+  enderecoComplemento: z.string().optional(),
+  enderecoBairro: z.string().optional(),
+  enderecoCidade: z.string().optional(),
+  enderecoUf: z.string().optional(),
 });
 
 export async function GET(request: NextRequest) {
@@ -85,24 +95,31 @@ export async function POST(request: NextRequest) {
     const [year, month, day] = data.date.split("-").map(Number);
     const appointmentDate = new Date(year, month - 1, day, 0, 0, 0, 0);
 
-    let client = await prisma.client.findFirst({
-      where: {
-        OR: [{ email: data.clientEmail }, { phone: data.clientPhone }],
-      },
-    });
+    const phoneDigits = data.clientPhone.replace(/\D/g, "");
+    const clients = await prisma.client.findMany();
+    let client = clients.find((c) => c.phone.replace(/\D/g, "") === phoneDigits) || null;
+
+    const clientData = {
+      name: data.clientName,
+      phone: data.clientPhone,
+      email: data.clientEmail,
+      enderecoCep: data.enderecoCep || null,
+      enderecoLogradouro: data.enderecoLogradouro || null,
+      enderecoNumero: data.enderecoNumero || null,
+      enderecoComplemento: data.enderecoComplemento || null,
+      enderecoBairro: data.enderecoBairro || null,
+      enderecoCidade: data.enderecoCidade || null,
+      enderecoUf: data.enderecoUf || null,
+    };
 
     if (!client) {
       client = await prisma.client.create({
-        data: {
-          name: data.clientName,
-          phone: data.clientPhone,
-          email: data.clientEmail,
-        },
+        data: clientData,
       });
     } else {
-      await prisma.client.update({
+      client = await prisma.client.update({
         where: { id: client.id },
-        data: { name: data.clientName, phone: data.clientPhone, email: data.clientEmail },
+        data: clientData,
       });
     }
 
