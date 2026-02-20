@@ -1,9 +1,6 @@
 Melhorias na área do cliente
 
-Na página /agendar no segundo passo "2. estilo e cor" vamos fazer agora um card para seleção do estilo da trança, a imagem no card será dividido masculino/feminino com um corte na diagonal. e podemos manter a parte da cor para seleção. 
-
 Na página /agendar no terceiro passo "3. contato" vamos criar validação de campo validação de telefone ou seja com número de celular com DDD + 9 dígitos. Validação para o campo e-mail, todos durante a escrita e não somente campo clicar no botão "agendar". Nas observações, coloque um placeholder de exemplo "Gostaria de um tom mais escuro de loiro". 
-
 
 Melhorias na área do administrador
 

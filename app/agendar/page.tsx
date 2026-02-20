@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { format, addDays } from "date-fns";
-import { Sun, CloudSun, Moon } from "lucide-react";
+import { Sun, CloudSun, Moon, Clock, DollarSign } from "lucide-react";
 
 const PERIODS = [
-  { id: "manha", label: "Manhã", icon: Sun },
+  { id: "manhã", label: "Manhã", icon: Sun },
   { id: "tarde", label: "Tarde", icon: CloudSun },
   { id: "noite", label: "Noite", icon: Moon },
 ] as const;
 
-type BraidStyle = { id: string; name: string; description?: string | null; basePrice: number };
+type BraidStyle = { id: string; name: string; description?: string | null; basePrice: number; estimatedDuration: number };
 type Color = { id: string; name: string; hexCode: string };
 
 export default function AgendarPage() {
@@ -21,6 +22,7 @@ export default function AgendarPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState({
     clientName: "",
     clientPhone: "",
@@ -36,6 +38,26 @@ export default function AgendarPage() {
     fetch("/api/braid-styles").then((r) => r.json()).then(setStyles);
     fetch("/api/colors").then((r) => r.json()).then(setColors);
   }, []);
+
+  // Scroll para o card selecionado
+  useEffect(() => {
+    if (step !== 2 || !form.braidStyleId) return;
+    
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const selectedCard = container.querySelector(`[data-style-id="${form.braidStyleId}"]`) as HTMLElement;
+    if (selectedCard) {
+      const containerRect = container.getBoundingClientRect();
+      const cardRect = selectedCard.getBoundingClientRect();
+      const scrollLeft = container.scrollLeft + (cardRect.left - containerRect.left) - (containerRect.width / 2) + (cardRect.width / 2);
+      
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  }, [form.braidStyleId, step]);
 
   // Data mínima = amanhã (dia atual não disponível para agendamento)
   const minDate = format(addDays(new Date(), 1), "yyyy-MM-dd");
@@ -109,17 +131,94 @@ export default function AgendarPage() {
           {step === 2 && (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Estilo da trança</label>
-                <select value={form.braidStyleId} onChange={(e) => setForm({ ...form, braidStyleId: e.target.value })} required className="bg-jade-500 w-full px-4 py-2 border rounded-lg">
-                  <option value="">Selecione</option>
-                  {styles.map((s) => <option key={s.id} value={s.id}>{s.name} - R$ {s.basePrice.toFixed(2)}</option>)}
-                </select>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Estilo da trança</label>
+                <div 
+                  ref={scrollContainerRef}
+                  className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory px-2" 
+                  style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
+                >
+                  {styles.map((style) => {
+                    const hours = Math.floor(style.estimatedDuration / 60);
+                    const minutes = style.estimatedDuration % 60;
+                    const durationText = hours > 0 
+                      ? `${hours}h${minutes > 0 ? ` ${minutes}min` : ''}`
+                      : `${minutes}min`;
+                    
+                    return (
+                      <div
+                        key={style.id}
+                        data-style-id={style.id}
+                        onClick={() => {
+                          setForm({ ...form, braidStyleId: style.id });
+                        }}
+                        className={`relative rounded-lg overflow-hidden transition-all cursor-pointer flex-shrink-0 w-64 snap-start ${
+                          form.braidStyleId === style.id
+                            ? "border-[3px] border-jade-500 shadow-xl scale-105"
+                            : "border-2 border-gray-200 hover:border-jade-300"
+                        }`}
+                      >
+                        {/* Imagens como modelo */}
+                        <div className="relative w-full aspect-[16/9] bg-gray-100">
+                          <div className="grid grid-cols-2 h-full">
+                            <div className="relative">
+                              <Image
+                                src="/assets/nago_feminina.png"
+                                alt={`${style.name} - Modelo feminino`}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                            <div className="relative">
+                              <Image
+                                src="/assets/nago_masculina.png"
+                                alt={`${style.name} - Modelo masculino`}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          </div>
+                          {form.braidStyleId === style.id && (
+                            <div className="absolute inset-0 bg-jade-500/10" />
+                          )}
+                        </div>
+                        
+                        {/* Informações do estilo */}
+                        <div className={`p-4 ${form.braidStyleId === style.id ? "bg-jade-50" : "bg-white"}`}>
+                          <h3 className={`text-lg font-semibold mb-2 ${
+                            form.braidStyleId === style.id ? "text-jade-700" : "text-gray-900"
+                          }`}>{style.name}</h3>
+                          {style.description && (
+                            <p className={`text-sm mb-3 ${
+                              form.braidStyleId === style.id ? "text-jade-600" : "text-gray-600"
+                            }`}>{style.description}</p>
+                          )}
+                          <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-2 text-gray-700">
+                              <DollarSign className={`w-4 h-4 ${
+                                form.braidStyleId === style.id ? "text-jade-600" : "text-jade-600"
+                              }`} />
+                              <span className={`font-semibold text-lg ${
+                                form.braidStyleId === style.id ? "text-jade-600" : "text-jade-600"
+                              }`}>
+                                R$ {style.basePrice.toFixed(2)}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 text-gray-700">
+                              <Clock className="w-4 h-4 text-gray-500" />
+                              <span className="text-sm">{durationText}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Cor desejada</label>
                 <div className="flex flex-wrap gap-2">
                   {colors.map((c) => (
-                    <button key={c.id} type="button" onClick={() => setForm({ ...form, colorId: c.id })} className={`text-black flex items-center gap-2 px-3 py-2 rounded-lg border ${form.colorId === c.id ? "ring-2 ring-jade-500" : ""}`}>
+                    <button key={c.id} type="button" onClick={() => setForm({ ...form, colorId: c.id })} className={`text-black flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${form.colorId === c.id ? "ring-2 ring-jade-500 border-jade-500" : "border-gray-300 hover:border-jade-200"}`}>
                       <span className="w-5 h-5 rounded-full border" style={{ backgroundColor: c.hexCode }} />
                       <span>{c.name}</span>
                     </button>

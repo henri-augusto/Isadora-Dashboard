@@ -79,7 +79,7 @@ export default async function AdminDashboardPage() {
                 <div>
                   <span className="text-black font-medium">{apt.client.name}</span>
                   <span className="text-gray-600 ml-2">
-                    {format(apt.date, "dd/MM", { locale: ptBR })} as {apt.time}
+                    {format(apt.date, "dd/MM", { locale: ptBR })} pela {apt.time}
                   </span>
                 </div>
                 <span className="text-black text-sm text-gray-500">
