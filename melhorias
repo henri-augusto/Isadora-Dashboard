@@ -1,7 +1,7 @@
 Melhorias na área do administrador
     Na página /admin/agenda 
 
-        gostaria de criar um calendário virtual para visualizar os dias e períodos que estão agendados;
+        crie um calendário virtual para visualizar os dias e períodos que estão agendados;
 
         retornar qual cliente está para o dia agendado em forma de card minimalista constando: nome e endereço 
 
@@ -11,7 +11,9 @@ Melhorias na área do administrador
             "finanças" > receita mensal; despesa mensal; saldo mensal;
                        > um pequeno gráfico com balanço semanal;
 
-            "Cliente" > 
+            "Cliente" > mostrando o total de clientes com status "pendente" de confirmação
+                      > mostrando o total de clientes com status "confirmado"
+                      > mostrando o total de clientes com status "cancelado"
 
 Em @financeiros mostrar no gráfico apenas o balanço do ano atual.
 
@@ -20,6 +22,3 @@ Na parte "lançamentos" colocar a seleção de mês e ano nessa parte.
 Em @agenda seria mais intuitivo mostrar um calendário completo para selecionar a data. mostrando o dia em cores conforme com cor diferenciada se tiver um cliente agendado. 
 
 
-Melhorias na área do cliente
-
-Verificar no banco quais datas e períodos estão ocupados para 

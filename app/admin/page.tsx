@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { formatDateShort } from "@/lib/dateUtils";
 
 async function getSummary() {
   const now = new Date();
@@ -79,7 +78,7 @@ export default async function AdminDashboardPage() {
                 <div>
                   <span className="text-black font-medium">{apt.client.name}</span>
                   <span className="text-gray-600 ml-2">
-                    {format(apt.date, "dd/MM", { locale: ptBR })} pela {apt.time}
+                    {formatDateShort(apt.date)} pela {apt.time}
                   </span>
                 </div>
                 <span className="text-black text-sm text-gray-500">

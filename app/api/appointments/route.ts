@@ -91,7 +91,6 @@ export async function POST(request: NextRequest) {
     const data = createSchema.parse(body);
 
     // Corrige o problema de timezone: cria a data no timezone local
-    // data.date vem como "yyyy-MM-dd", então criamos como "yyyy-MM-ddT00:00:00" no timezone local
     const [year, month, day] = data.date.split("-").map(Number);
     const appointmentDate = new Date(year, month - 1, day, 0, 0, 0, 0);
 
@@ -123,9 +122,11 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    const dayStart = new Date(year, month - 1, day, 0, 0, 0, 0);
+    const dayEnd = new Date(year, month - 1, day, 23, 59, 59, 999);
     const existing = await prisma.appointment.findFirst({
       where: {
-        date: appointmentDate,
+        date: { gte: dayStart, lte: dayEnd },
         time: data.time,
         status: { not: "cancelled" },
       },

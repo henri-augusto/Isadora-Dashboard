@@ -52,12 +52,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const data = createSchema.parse(body);
 
+    const [y, m, d] = data.date.split("-").map(Number);
+    const localDate = new Date(y, m - 1, d, 0, 0, 0, 0);
+
     const entry = await prisma.financeEntry.create({
       data: {
         type: data.type,
         amount: data.type === "expense" ? -Math.abs(data.amount) : Math.abs(data.amount),
         description: data.description,
-        date: new Date(data.date),
+        date: localDate,
         category: data.category,
       },
     });

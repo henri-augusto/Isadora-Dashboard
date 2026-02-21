@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { formatDate } from "@/lib/dateUtils";
 
 const MONTHS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
@@ -91,7 +91,7 @@ export default function FinanceirosPage() {
         <tbody>
           {entries.map((e) => (
             <tr key={e.id} className="border-t">
-              <td className="text-gray-500 p-3">{format(new Date(e.date), "dd/MM/yyyy", { locale: ptBR })}</td>
+              <td className="text-gray-500 p-3">{formatDate(e.date)}</td>
               <td className="text-gray-500 p-3">{e.description}</td>
               <td className="p-3"><span className={e.amount > 0 ? "text-green-600" : "text-red-600"}>{e.amount > 0 ? "Receita" : "Despesa"}</span></td>
               <td className={`p-3 text-right font-medium ${e.amount > 0 ? "text-green-600" : "text-red-600"}`}>{e.amount > 0 ? "+" : ""} R$ {e.amount.toFixed(2)}</td>

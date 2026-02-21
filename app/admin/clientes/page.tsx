@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { formatDate } from "@/lib/dateUtils";
 
 type Client = {
   id: string;
@@ -58,7 +57,7 @@ export default function ClientesPage() {
               {selected.appointments.map((apt) => (
                 <li key={apt.id} className="flex justify-between text-sm py-2 border-b last:border-0">
                   <div>
-                    <span className="text-gray-500">{format(new Date(apt.date), "dd/MM/yyyy", { locale: ptBR })} às {apt.time}</span>
+                    <span className="text-gray-500">{formatDate(apt.date)} às {apt.time}</span>
                     <span className="ml-2 text-gray-500">- {apt.braidStyle.name} - {apt.color.name}</span>
                   </div>
                   <span className={`px-2 py-0.5 rounded text-xs ${apt.status === "completed" ? "bg-green-100 text-green-800" : apt.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-jade-100 text-jade-500"}`}>{apt.status}</span>
